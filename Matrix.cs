@@ -34,7 +34,7 @@ namespace MatrixLib
             return this;
         }
 
-        public Matrix Add(Matrix matrix)
+        public Matrix Sum(Matrix matrix)
         {
             if (isEqualSize(matrix) == false)
                 throw new ArgumentException("Don't same size with matrix");
@@ -49,5 +49,19 @@ namespace MatrixLib
 
             return this;
         }
+
+        public Matrix Multiply(double number)
+        {
+            for (int y = 0; y < YLength; y++)
+            {
+                for (int x = 0; x < XLength; x++)
+                {
+                    array[x,y] *= number;
+                }
+            }
+
+            return this;
+        }
+
     }
 }
