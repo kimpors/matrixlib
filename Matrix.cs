@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MatrixLib
+﻿namespace MatrixLib
 {
     public class Matrix
     {
@@ -56,12 +54,16 @@ namespace MatrixLib
             {
                 for (int x = 0; x < XLength; x++)
                 {
-                    array[x,y] *= number;
+                    array[x, y] *= number;
                 }
             }
 
             return this;
         }
 
+        public Matrix Sub(Matrix matrix)
+        {
+            return Sum(matrix.Multiply(-1));
+        }
     }
 }
