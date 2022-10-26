@@ -2,7 +2,7 @@
 {
     public class Matrix
     {
-        public double[,] array;
+        private readonly double[,] array;
         public int XLength { get; }
         public int YLength { get; }
 
@@ -12,6 +12,12 @@
             YLength = yLength;
 
             array = new double[xLength, yLength];
+        }
+
+        public double this[int x, int y]
+        {
+            get { return array[x, y]; }
+            set { array[x, y] = value; }
         }
 
         public bool isEqualSize(Matrix matrix)
@@ -25,7 +31,7 @@
             {
                 for (int x = 0; x < XLength; x++)
                 {
-                    array[x, y] = new Random().NextDouble() * (max - min + 1) + min;
+                    this[x, y] = new Random().NextDouble() * (max - min + 1) + min;
                 }
             }
 
@@ -41,7 +47,7 @@
             {
                 for (int x = 0; x < XLength; x++)
                 {
-                    array[x, y] += matrix.array[x, y];
+                    this[x, y] += matrix.array[x, y];
                 }
             }
 
@@ -54,12 +60,31 @@
             {
                 for (int x = 0; x < XLength; x++)
                 {
-                    array[x, y] *= number;
+                    this[x, y] *= number;
                 }
             }
 
             return this;
         }
+
+        // public Matrix Multiply(Matrix matrix)
+        // {
+        //     if (XLength == matrix.YLength == false)
+        //         throw new ArgumentException("Matrices are inconsistent");
+
+        //     Matrix result = new Matrix(YLength, matrix.XLength);
+
+        //     for (int i = 0; i < YLength; i++)
+        //     {
+        //         for (int j = 0; j < matrix.XLength; j++)
+        //         {
+        //             for (int n = 0; n < XLength; n++)
+        //             {
+        //                 resul
+        //             }
+        //         }
+        //     }
+        // }
 
         public Matrix Sub(Matrix matrix)
         {
