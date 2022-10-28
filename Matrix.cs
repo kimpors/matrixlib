@@ -14,6 +14,15 @@
             _array = new double[RowLength, ColumnLength];
         }
 
+        public static Matrix operator +(Matrix a, Matrix b)
+            => a.Sum(b);
+        public static Matrix operator -(Matrix a, Matrix b)
+            => a.Sub(b);
+        public static Matrix operator *(Matrix a, double b)
+            => a.Mul(b);
+        public static Matrix operator *(Matrix a, Matrix b)
+            => a.Mul(b);
+
         public void SetMatrix(double[,] arr)
         {
             _array = arr;
@@ -24,9 +33,10 @@
             set { _array[row, column] = value; }
         }
 
-        public bool isEqualSize(Matrix matrix)
+
+        public bool isEqualSize(Matrix a)
         {
-            return RowLength == matrix.RowLength && ColumnLength == matrix.ColumnLength;
+            return RowLength == a.RowLength && ColumnLength == a.ColumnLength;
         }
 
         public Matrix SetRandomValues(int min = 0, int max = 0)
@@ -42,7 +52,7 @@
             return this;
         }
 
-        public Matrix Sum(Matrix matrix)
+        public Matrix Sum(Matrix a)
         {
             if (isEqualSize(matrix) == false)
                 throw new ArgumentException("Don't same size with matrix");
@@ -51,27 +61,27 @@
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] += matrix[y, x];
+                    this[y, x] += a[y, x];
                 }
             }
 
             return this;
         }
 
-        public Matrix Multiply(double number)
+        public Matrix Mul(double a)
         {
             for (int y = 0; y < RowLength; y++)
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] *= number;
+                    this[y, x] *= a;
                 }
             }
 
             return this;
         }
 
-        public Matrix Multiply(Matrix a)
+        public Matrix Mul(Matrix a)
         {
             if (ColumnLength == a.RowLength == false)
                 throw new ArgumentException("Matrices are inconsistent");
@@ -92,9 +102,9 @@
             return result;
         }
 
-        public Matrix Sub(Matrix matrix)
+        public Matrix Sub(Matrix a)
         {
-            return Sum(matrix.Multiply(-1));
+            return Sum(a.Mul(-1));
         }
     }
 }
