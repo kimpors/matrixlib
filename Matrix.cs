@@ -2,36 +2,40 @@
 {
     public class Matrix
     {
-        private readonly double[,] array;
-        public int XLength { get; }
-        public int YLength { get; }
+        private double[,] _array;
+        public uint RowLength { get; }
+        public uint ColumnLength { get; }
 
-        public Matrix(int xLength, int yLength)
+        public Matrix(uint rows, uint columns)
         {
-            XLength = xLength;
-            YLength = yLength;
+            RowLength = rows;
+            ColumnLength = columns;
 
-            array = new double[xLength, yLength];
+            _array = new double[RowLength, ColumnLength];
         }
 
-        public double this[int x, int y]
+        public void SetMatrix(double[,] arr)
         {
-            get { return array[x, y]; }
-            set { array[x, y] = value; }
+            _array = arr;
+        }
+        public double this[int row, int column]
+        {
+            get { return _array[row, column]; }
+            set { _array[row, column] = value; }
         }
 
         public bool isEqualSize(Matrix matrix)
         {
-            return XLength == matrix.XLength && YLength == matrix.YLength;
+            return RowLength == matrix.RowLength && ColumnLength == matrix.ColumnLength;
         }
 
         public Matrix SetRandomValues(int min = 0, int max = 0)
         {
-            for (int y = 0; y < YLength; y++)
+            for (int y = 0; y < RowLength; y++)
             {
-                for (int x = 0; x < XLength; x++)
+                for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[x, y] = new Random().NextDouble() * (max - min + 1) + min;
+                    this[y, x] = new Random().NextDouble() * (max - min + 1) + min;
                 }
             }
 
@@ -43,11 +47,11 @@
             if (isEqualSize(matrix) == false)
                 throw new ArgumentException("Don't same size with matrix");
 
-            for (int y = 0; y < YLength; y++)
+            for (int y = 0; y < RowLength; y++)
             {
-                for (int x = 0; x < XLength; x++)
+                for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[x, y] += matrix.array[x, y];
+                    this[y, x] += matrix[y, x];
                 }
             }
 
@@ -56,35 +60,37 @@
 
         public Matrix Multiply(double number)
         {
-            for (int y = 0; y < YLength; y++)
+            for (int y = 0; y < RowLength; y++)
             {
-                for (int x = 0; x < XLength; x++)
+                for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[x, y] *= number;
+                    this[y, x] *= number;
                 }
             }
 
             return this;
         }
 
-        // public Matrix Multiply(Matrix matrix)
-        // {
-        //     if (XLength == matrix.YLength == false)
-        //         throw new ArgumentException("Matrices are inconsistent");
+        public Matrix Multiply(Matrix a)
+        {
+            if (ColumnLength == a.RowLength == false)
+                throw new ArgumentException("Matrices are inconsistent");
 
-        //     Matrix result = new Matrix(YLength, matrix.XLength);
+            Matrix result = new Matrix(RowLength, a.ColumnLength);
 
-        //     for (int i = 0; i < YLength; i++)
-        //     {
-        //         for (int j = 0; j < matrix.XLength; j++)
-        //         {
-        //             for (int n = 0; n < XLength; n++)
-        //             {
-        //                 resul
-        //             }
-        //         }
-        //     }
-        // }
+            for (int y = 0; y < RowLength; y++)
+            {
+                for (int x = 0; x < a.ColumnLength; x++)
+                {
+                    for (int n = 0; n < ColumnLength; n++)
+                    {
+                        result[y, x] += this[y, n] * a[n, x];
+                    }
+                }
+            }
+
+            return result;
+        }
 
         public Matrix Sub(Matrix matrix)
         {
