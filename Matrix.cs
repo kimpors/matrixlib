@@ -6,12 +6,26 @@
         public uint RowLength { get; }
         public uint ColumnLength { get; }
 
+        public Matrix(uint size)
+        {
+            RowLength = ColumnLength = size;
+
+            _array = new double[RowLength, ColumnLength];
+        }
         public Matrix(uint rows, uint columns)
         {
             RowLength = rows;
             ColumnLength = columns;
 
             _array = new double[RowLength, ColumnLength];
+        }
+
+        public Matrix(double[,] array)
+        {
+            RowLength = (uint)array.GetLength(0);
+            ColumnLength = (uint)array.GetLength(1);
+
+            _array = array;
         }
 
         public static Matrix operator +(Matrix a, Matrix b)
@@ -23,21 +37,14 @@
         public static Matrix operator *(Matrix a, Matrix b)
             => a.Mul(b);
 
-        public void SetMatrix(double[,] arr)
-        {
-            _array = arr;
-        }
         public double this[int row, int column]
         {
             get { return _array[row, column]; }
             set { _array[row, column] = value; }
         }
 
-
         public bool isEqualSize(Matrix a)
-        {
-            return RowLength == a.RowLength && ColumnLength == a.ColumnLength;
-        }
+            => RowLength == a.RowLength && ColumnLength == a.ColumnLength;
 
         public Matrix SetRandomValues(int min = 0, int max = 0)
         {
@@ -45,7 +52,7 @@
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] = new Random().NextDouble() * (max - min + 1) + min;
+                    this[y, x] = Math.Sign(new Random().NextDouble() * (max - min + 1) + min);
                 }
             }
 
@@ -54,7 +61,7 @@
 
         public Matrix Sum(Matrix a)
         {
-            if (isEqualSize(matrix) == false)
+            if (isEqualSize(a) == false)
                 throw new ArgumentException("Don't same size with matrix");
 
             for (int y = 0; y < RowLength; y++)
@@ -103,8 +110,6 @@
         }
 
         public Matrix Sub(Matrix a)
-        {
-            return Sum(a.Mul(-1));
-        }
+            => Sum(a.Mul(-1));
     }
 }
