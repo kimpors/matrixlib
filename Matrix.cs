@@ -60,7 +60,7 @@
             }
 
             double result = 0;
-            Matrix temp = new Matrix(size - 1);
+            Matrix Temp = new Matrix(size - 1);
 
             for (int n = 0; n < size; n++)
             {
@@ -71,15 +71,54 @@
                         if (x == n)
                             continue;
 
-                        temp[y - 1, subx] = a[y, x];
+                        Temp[y - 1, subx] = a[y, x];
                         subx++;
                     }
                 }
 
-                result += a[0, n] * (n % 2 == 0 ? 1 : -1) * GetDeterminant(temp);
+                result += a[0, n] * (n % 2 == 0 ? 1 : -1) * GetDeterminant(Temp);
             }
 
             return result;
+        }
+
+        public static Matrix GetReverse(Matrix a)
+        {
+            if (double.IsNaN(Matrix.GetDeterminant(a)))
+                return null;
+
+            uint size = a.ColumnLength;
+            double determinant = Matrix.GetDeterminant(a);
+
+            Matrix Result = new Matrix(size);
+            Matrix Temp = new Matrix(size - 1);
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    for (int y = 0, suby = 0; y < size; y++)
+                    {
+                        if (y == i)
+                            continue;
+
+                        for (int x = 0, subx = 0; x < size; x++)
+                        {
+                            if (x == j)
+                                continue;
+
+                            Temp[suby, subx] = a[y, x];
+                            subx++;
+                        }
+
+                        suby++;
+                    }
+
+                    Result[j, i] = ((i + j) % 2 == 0 ? 1 : -1) * Matrix.GetDeterminant(Temp);
+                }
+            }
+
+            return Result * Math.Round(1 / determinant, 3);
         }
 
         public double this[int row, int column]
@@ -90,15 +129,17 @@
 
         public Matrix SetRandomValues(int min = 0, int max = 0)
         {
+            Matrix Result = new Matrix(RowLength, ColumnLength);
+
             for (int y = 0; y < RowLength; y++)
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] = new Random().NextInt64(min, max);
+                    Result[y, x] = new Random().NextInt64(min, max);
                 }
             }
 
-            return this;
+            return Result;
         }
 
         public Matrix Sum(Matrix a)
@@ -106,36 +147,40 @@
             if (IsEqualSize(a) == false)
                 throw new ArgumentException("Don't same size with matrix");
 
+            Matrix Result = new Matrix(a.RowLength, a.ColumnLength);
+
             for (int y = 0; y < RowLength; y++)
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] += a[y, x];
+                    Result[y, x] = this[y, x] + a[y, x];
                 }
             }
 
-            return this;
+            return Result;
         }
 
         public Matrix Mul(double a)
         {
+            Matrix Result = new Matrix(RowLength, ColumnLength);
+
             for (int y = 0; y < RowLength; y++)
             {
                 for (int x = 0; x < ColumnLength; x++)
                 {
-                    this[y, x] *= a;
+                    Result[y, x] = Math.Round(this[y, x] * a, 3);
                 }
             }
 
-            return this;
+            return Result;
         }
 
         public Matrix Mul(Matrix a)
         {
             if (ColumnLength != a.RowLength)
-                throw new ArgumentException("Matrices are inconsistent");
+                throw new ArgumentException("Matrices are inconsistent(ColumnLength != a.RowLength)");
 
-            Matrix result = new Matrix(RowLength, a.ColumnLength);
+            Matrix Result = new Matrix(RowLength, a.ColumnLength);
 
             for (int y = 0; y < RowLength; y++)
             {
@@ -143,12 +188,14 @@
                 {
                     for (int n = 0; n < ColumnLength; n++)
                     {
-                        result[y, x] += this[y, n] * a[n, x];
+                        Result[y, x] += this[y, n] * a[n, x];
                     }
+
+                    Result[y, x] = Math.Round(Result[y, x], 3);
                 }
             }
 
-            return result;
+            return Result;
         }
 
         public Matrix Sub(Matrix a)
@@ -164,6 +211,7 @@
                 {
                     result += this[y, x] + " |";
                 }
+
                 result += "\n";
             }
 
