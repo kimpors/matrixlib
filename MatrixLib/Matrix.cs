@@ -11,9 +11,9 @@ public class Matrix
     public Matrix(uint size)
     {
         Rows = Columns = size;
-
         _array = new double[size, size];
     }
+
     public Matrix(uint rows, uint columns)
     {
         Rows = rows;
@@ -35,8 +35,14 @@ public class Matrix
     public static Matrix operator *(Matrix a, Matrix b) => a.Mul(b);
     public static Matrix operator *(Matrix a, double b) => a.Mul(b);
 
-    public static bool IsSquare(Matrix a) => a.Rows == a.Columns;
-    public bool IsEqualSize(Matrix a) => Rows == a.Columns && Columns == a.Columns;
+    public static double[,] GetRaw(Matrix a) 
+      => a._array;
+
+    public static bool IsSquare(Matrix a) 
+      => a.Rows == a.Columns;
+
+    public bool IsEqualSize(Matrix a) 
+      => Rows == a.Rows && Columns == a.Columns;
 
     public static double GetDeterminant(Matrix a)
     {
@@ -56,7 +62,7 @@ public class Matrix
         }
 
         double result = 0;
-        Matrix Temp = new Matrix(size - 1);
+        Matrix Temp = new(size - 1);
 
         for (int n = 0; n < size; n++)
         {
@@ -88,8 +94,8 @@ public class Matrix
         uint size = a.Columns;
         double determinant = Matrix.GetDeterminant(a);
 
-        Matrix Result = new Matrix(size);
-        Matrix Temp = new Matrix(size - 1);
+        Matrix Result = new(size);
+        Matrix Temp = new(size - 1);
 
         for (int i = 0; i < size; i++)
         {
@@ -127,7 +133,7 @@ public class Matrix
 
     public Matrix SetRandomValues(int min = 0, int max = 0)
     {
-        Matrix Result = new Matrix(Rows, Columns);
+        Matrix Result = new(Rows, Columns);
 
         for (int y = 0; y < Rows; y++)
         {
@@ -147,7 +153,7 @@ public class Matrix
           throw new ArgumentException("Don't same size with matrix");
         }
 
-        Matrix Result = new Matrix(a.Rows, a.Columns);
+        Matrix Result = new(a.Rows, a.Columns);
 
         for (int y = 0; y < Rows; y++)
         {
@@ -162,7 +168,7 @@ public class Matrix
 
     public Matrix Mul(double a)
     {
-        Matrix Result = new Matrix(Rows, Columns);
+        Matrix Result = new(Rows, Columns);
 
         for (int y = 0; y < Rows; y++)
         {
@@ -182,7 +188,7 @@ public class Matrix
             throw new ArgumentException("Matrices are inconsistent(ColumnLength != a.RowLength)");
         }
 
-        Matrix Result = new Matrix(Rows, a.Columns);
+        Matrix Result = new(Rows, a.Columns);
 
         for (int y = 0; y < Rows; y++)
         {

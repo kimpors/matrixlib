@@ -2,18 +2,31 @@ namespace MatrixLib.Tests;
 
 public class Tests
 {
-  [TestCase((uint)0, (uint)0, ExpectedResult = true)]
-  [TestCase((uint)1, (uint)1, ExpectedResult = true)]
-  [TestCase((uint)2, (uint)3, ExpectedResult = false)]
-  public bool IsSquare(uint rows, uint columns)
-  {
-    return Matrix.IsSquare(new(rows, columns));
-  }
+  [TestCaseSource(typeof(Data), nameof(Data.Squares))]
+  public bool IsSquare(Matrix a)
+    => Matrix.IsSquare(a);
 
-  [TestCase((uint)0, (uint)0, (uint)0, (uint)0, ExpectedResult = true)]
-  [TestCase((uint)1, (uint)1, (uint)2, (uint)2, ExpectedResult = false)]
-  public bool IsEqualSize(uint aRows, uint aColumns, uint bRows, uint bColumns)
-  {
-    return new Matrix(aRows, aColumns).IsEqualSize(new Matrix(bRows, bColumns));
-  }
+  [TestCaseSource(typeof(Data), nameof(Data.EqualSizes))]
+  public bool IsEqualSize(Matrix a, Matrix b)
+    => a.IsEqualSize(b);
+
+  [TestCaseSource(typeof(Data), nameof(Data.Determinants))]
+  public double Determinant(Matrix a) 
+    => Matrix.GetDeterminant(a);
+
+  [TestCaseSource(typeof(Data), nameof(Data.Sums))]
+  public double[,] Sum(Matrix a, Matrix b)
+    => Matrix.GetRaw(a + b);
+
+  [TestCaseSource(typeof(Data), nameof(Data.Subs))]
+  public double[,] Sub(Matrix a, Matrix b)
+    => Matrix.GetRaw(a - b);
+
+  [TestCaseSource(typeof(Data), nameof(Data.MulsByValue))]
+  public double[,] MulByValue(Matrix a, double b)
+    => Matrix.GetRaw(a * b);
+
+  [TestCaseSource(typeof(Data), nameof(Data.Muls))]
+  public double[,] Mul(Matrix a, Matrix b)
+    => Matrix.GetRaw(a * b);
 }
