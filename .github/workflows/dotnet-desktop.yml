@@ -1,0 +1,40 @@
+name: .NET Core Desktop Test
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-on-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+        
+    - name: Execute unit tests
+      run: dotnet test
+
+  build-on-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Execute unit tests
+      run: dotnet test
