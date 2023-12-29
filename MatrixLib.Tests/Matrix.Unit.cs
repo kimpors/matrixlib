@@ -29,4 +29,7 @@ public class Tests
   [TestCaseSource(typeof(Data), nameof(Data.Muls))]
   public double[,] Mul(Matrix a, Matrix b)
     => Matrix.Raw(Matrix.Round(a * b));
+
+  [TestCaseSource(typeof(Data), nameof(Data.Strings))]
+  public string String(Matrix a) => a.ToString();
 }

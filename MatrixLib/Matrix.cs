@@ -1,4 +1,6 @@
-﻿namespace MatrixLib;
+﻿using System.Text;
+
+namespace MatrixLib;
 
 public class Matrix
 {
@@ -354,18 +356,28 @@ public class Matrix
     ///  </summary>
     public override string ToString()
     {
-        string result = string.Empty;
+        StringBuilder result = new("[");
 
         for (int y = 0; y < Rows; y++)
         {
             for (int x = 0; x < Columns; x++)
             {
-                result += this[y, x] + " |";
+              if (x == Columns - 1)
+              {
+                result.Append(_array[y, x] + "]");
+              }
+              else
+              {
+                result.Append(_array[y, x] + ", ");
+              }
             }
 
-            result += "\n";
+            if (y != Rows - 1)
+            {
+              result.Append("\n[");
+            }
         }
 
-        return result;
+        return result.ToString();
     }
 }

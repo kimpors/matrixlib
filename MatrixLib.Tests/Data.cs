@@ -99,4 +99,15 @@ public static class Data
 
     }
   }
+
+  public static IEnumerable Strings
+  {
+    get
+    {
+      yield return new TestCaseData(_matrices1[0]).Returns("[1, 1, 1]\n[1, 1, 1]\n[1, 1, 1]");
+      yield return new TestCaseData(_matrices1[1]).Returns("[1, 2, 2]\n[2, 1, 2]\n[2, 2, 1]");
+      yield return new TestCaseData(_matrices1[2]).Returns("[1.5, 1.5, 1.5]\n[2.5, 2.5, 2.5]\n[3.5, 3.5, 3.5]");
+      yield return new TestCaseData(_matrices1[3]).Returns("[25.5, 100, 25]\n[11, 4, 45]\n[34, 2, 123]");
+    }
+  }
 }
