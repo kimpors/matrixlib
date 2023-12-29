@@ -8,12 +8,23 @@ public class Matrix
     public uint Rows { get; }
     public uint Columns { get; }
 
+    ///  <summary>
+    ///   Initilize new empty square matrix
+    ///  </summary>
+    ///  <param name="size">Length of rows and columns</param>
+    ///  <returns>New empty square matrix</returns>
     public Matrix(uint size)
     {
         Rows = Columns = size;
         _array = new double[size, size];
     }
 
+    ///  <summary>
+    ///   Initilize new empty matrix
+    ///  </summary>
+    ///  <param name="rows">Length of rows</param>
+    ///  <param name="columns">Length of columns</param>
+    ///  <returns>New empty matrix</returns>
     public Matrix(uint rows, uint columns)
     {
         Rows = rows;
@@ -22,6 +33,11 @@ public class Matrix
         _array = new double[rows, columns];
     }
 
+    ///  <summary>
+    ///   Initilize new matrix using 2 dimension array
+    ///  </summary>
+    ///  <param name="array">2 dimension array</param>
+    ///  <returns>New matrix with same data as in 'array'</returns>
     public Matrix(double[,] array)
     {
         Rows = (uint)array.GetLength(0);
@@ -35,15 +51,33 @@ public class Matrix
     public static Matrix operator *(Matrix a, Matrix b) => a.Mul(b);
     public static Matrix operator *(Matrix a, double b) => a.Mul(b);
 
-    public static double[,] GetRaw(Matrix a) 
-      => a._array;
+    ///  <summary>
+    ///   Convert from 'Matrix' to 2 dimension double array
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Returns 2 dimension array</returns>
+    public static double[,] Raw(Matrix a) => a._array;
 
-    public static bool IsSquare(Matrix a) 
-      => a.Rows == a.Columns;
+    ///  <summary>
+    ///   Check if matrix have same rows and columns
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Returns true if rows and colums are equal</returns>
+    public static bool IsSquare(Matrix a) => a.Rows == a.Columns;
 
-    public bool IsEqualSize(Matrix a) 
-      => Rows == a.Rows && Columns == a.Columns;
+    ///  <summary>
+    ///   Checks if matrices have equal size.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Return true if matrices have same rows and columns</returns>
+    public bool IsEqualSize(Matrix a) => Rows == a.Rows && Columns == a.Columns;
 
+    ///  <summary>
+    ///   Rounds a number to the nearest integer.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <param name="precise">The accuracy of the numerical calculations performed</param>
+    ///  <returns>Matrix with round data</returns>
     public static Matrix Round(Matrix a, uint precise = 2)
     {
       Matrix Result = new(a.Rows, a.Columns);
@@ -59,6 +93,11 @@ public class Matrix
       return Result;
     }
 
+    ///  <summary>
+    ///   Rounds a number up to the next lower whole number.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Matrix with round to floor data</returns>
     public static Matrix Floor(Matrix a)
     {
       Matrix Result = new(a.Rows, a.Columns);
@@ -74,6 +113,11 @@ public class Matrix
       return Result;
     }
 
+    ///  <summary>
+    ///   Rounds a number up to the next higher whole number.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Matrix round to ceil data</returns>
     public static Matrix Ceil(Matrix a)
     {
       Matrix Result = new(a.Rows, a.Columns);
@@ -89,7 +133,21 @@ public class Matrix
       return Result;
     }
 
-    public static double GetDeterminant(Matrix a)
+    ///  <summary>
+    ///    Calculate determinant.
+    ///  </summary>
+    ///  <summary>
+    ///    The determinant is scalar value that can be calculated from the elements of the matrix.
+    ///  </summary>
+    ///  <summary>
+    ///    It's denoted by the symbol det(A) or sometimes by vertical bars around the matrix, such as ∣A∣.
+    ///  </summary>
+    ///  <summary>
+    ///   # Be aware. If is not square matrix then returns 'double.NaN'.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>double value</returns>
+    public static double Determinant(Matrix a)
     {
         if (IsSquare(a) == false)
         {
@@ -123,21 +181,29 @@ public class Matrix
                 }
             }
 
-            result += a[0, n] * (n % 2 == 0 ? 1 : -1) * GetDeterminant(Temp);
+            result += a[0, n] * (n % 2 == 0 ? 1 : -1) * Determinant(Temp);
         }
 
         return result;
     }
 
-    public static Matrix GetReverse(Matrix a)
+    ///  <summary>
+    ///   A method that returns the reverse (or inverse) of a matrix.
+    ///  </summary>
+    ///  <summary>
+    ///   # Be aware. Method throw exception if matrix don't have determinant.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Matrix</returns>
+    public static Matrix Reverse(Matrix a)
     {
-        if (double.IsNaN(Matrix.GetDeterminant(a)))
+        if (double.IsNaN(Matrix.Determinant(a)))
         {
           throw new ArgumentException("Can't get determinant. It's not square matrix");
         }
 
         uint size = a.Columns;
-        double determinant = Matrix.GetDeterminant(a);
+        double determinant = Matrix.Determinant(a);
 
         Matrix Result = new(size);
         Matrix Temp = new(size - 1);
@@ -163,7 +229,7 @@ public class Matrix
                     suby++;
                 }
 
-                Result[j, i] = ((i + j) % 2 == 0 ? 1 : -1) * Matrix.GetDeterminant(Temp);
+                Result[j, i] = ((i + j) % 2 == 0 ? 1 : -1) * Matrix.Determinant(Temp);
             }
         }
 
@@ -176,7 +242,13 @@ public class Matrix
         set { _array[row, column] = value; }
     }
 
-    public Matrix SetRandomValues(int min = 0, int max = 0)
+    ///  <summary>
+    ///   Generate matrix with random data.  
+    ///  </summary>
+    ///  <param name="min">Min value in range</param>
+    ///  <param name="max">Max value in range</param>
+    ///  <returns>New matrix filled with random data.</returns>
+    public Matrix Randomize(int min = 0, int max = 0)
     {
         Matrix Result = new(Rows, Columns);
 
@@ -191,6 +263,14 @@ public class Matrix
         return Result;
     }
 
+    ///  <summary>
+    ///   Add two matrices.
+    ///  </summary>
+    ///  <summary>
+    ///   # Be aware if matrices don't same size then method throw exception.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Return sum of 2 matrices</returns>
     public Matrix Sum(Matrix a)
     {
         if (IsEqualSize(a) == false)
@@ -211,6 +291,11 @@ public class Matrix
         return Result;
     }
 
+    ///  <summary>
+    ///   Multiply matrix by value.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Return multiplication matrix by value</returns>
     public Matrix Mul(double a)
     {
         Matrix Result = new(Rows, Columns);
@@ -226,6 +311,14 @@ public class Matrix
         return Result;
     }
 
+    ///  <summary>
+    ///   Multiply 2 matrices.
+    ///  </summary>
+    ///  <summary>
+    ///   # Be aware if 'Columns' first matrix != 'Rows' in second matrix then method throw exception.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Return multiplication of 2 matrices</returns>
     public Matrix Mul(Matrix a)
     {
         if (Columns != a.Rows)
@@ -249,8 +342,16 @@ public class Matrix
         return Result;
     }
 
+    ///  <summary>
+    ///    Add two matrices.
+    ///  </summary>
+    ///  <param name="a">Object of 'Matrix' class</param>
+    ///  <returns>Return substraction of 2 matrices</returns>
     public Matrix Sub(Matrix a) => Sum(a.Mul(-1));
 
+    ///  <summary>
+    ///    Return matrix as a string.
+    ///  </summary>
     public override string ToString()
     {
         string result = string.Empty;

@@ -12,21 +12,21 @@ public class Tests
 
   [TestCaseSource(typeof(Data), nameof(Data.Determinants))]
   public double Determinant(Matrix a) 
-    => Matrix.GetDeterminant(a);
+    => Matrix.Determinant(a);
 
   [TestCaseSource(typeof(Data), nameof(Data.Sums))]
   public double[,] Sum(Matrix a, Matrix b)
-    => Matrix.GetRaw(Matrix.Round(a + b));
+    => Matrix.Raw(Matrix.Round(a + b));
 
   [TestCaseSource(typeof(Data), nameof(Data.Subs))]
   public double[,] Sub(Matrix a, Matrix b)
-    => Matrix.GetRaw(Matrix.Round(a - b));
+    => Matrix.Raw(Matrix.Round(a - b));
 
   [TestCaseSource(typeof(Data), nameof(Data.MulsByValue))]
   public double[,] MulByValue(Matrix a, double b)
-    => Matrix.GetRaw(Matrix.Round(a * b));
+    => Matrix.Raw(Matrix.Round(a * b));
 
   [TestCaseSource(typeof(Data), nameof(Data.Muls))]
   public double[,] Mul(Matrix a, Matrix b)
-    => Matrix.GetRaw(Matrix.Round(a * b));
+    => Matrix.Raw(Matrix.Round(a * b));
 }
