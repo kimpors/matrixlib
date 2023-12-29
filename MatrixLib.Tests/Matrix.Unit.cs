@@ -16,17 +16,17 @@ public class Tests
 
   [TestCaseSource(typeof(Data), nameof(Data.Sums))]
   public double[,] Sum(Matrix a, Matrix b)
-    => Matrix.GetRaw(a + b);
+    => Matrix.GetRaw((a + b).Round());
 
   [TestCaseSource(typeof(Data), nameof(Data.Subs))]
   public double[,] Sub(Matrix a, Matrix b)
-    => Matrix.GetRaw(a - b);
+    => Matrix.GetRaw((a - b).Round());
 
   [TestCaseSource(typeof(Data), nameof(Data.MulsByValue))]
   public double[,] MulByValue(Matrix a, double b)
-    => Matrix.GetRaw(a * b);
+    => Matrix.GetRaw((a * b).Round());
 
   [TestCaseSource(typeof(Data), nameof(Data.Muls))]
   public double[,] Mul(Matrix a, Matrix b)
-    => Matrix.GetRaw(a * b);
+    => Matrix.GetRaw((a * b).Round());
 }

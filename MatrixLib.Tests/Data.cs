@@ -62,7 +62,7 @@ public static class Data
       yield return new TestCaseData(_matrices1[0], _matrices2[0]).Returns(new double[,] {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}});
       yield return new TestCaseData(_matrices1[1], _matrices2[1]).Returns(new double[,] {{4, 5, 5}, {6, 5, 6}, {7, 7, 6}});
       yield return new TestCaseData(_matrices1[2], _matrices2[2]).Returns(new double[,] {{1.75, 1.8, 1.9}, {3.4, 3.2, 3.6}, {6.7, 15.7, 8.8}});
-      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{126, 2600, 7825}, {23.5, 50004, 54.8}, {73, 1234, 567}});
+      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{125.5, 2600, 7825}, {23.5, 50004, 54.8}, {73, 1232, 567.3}});
     }
   }
 
@@ -71,9 +71,9 @@ public static class Data
     get
     {
       yield return new TestCaseData(_matrices1[0], _matrices2[0]).Returns(new double[,] {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
-      yield return new TestCaseData(_matrices1[1], _matrices2[1]).Returns(new double[,] {{-2, -1, -1}, {-2, -3, -2}, {-3, -3, -3}});
+      yield return new TestCaseData(_matrices1[1], _matrices2[1]).Returns(new double[,] {{-2, -1, -1}, {-2, -3, -2}, {-3, -3, -4}});
       yield return new TestCaseData(_matrices1[2], _matrices2[2]).Returns(new double[,] {{1.25, 1.2, 1.1}, {1.6, 1.8, 1.4}, {0.3, -8.7, -1.8}});
-      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{-74.5, -2400, -7775}, {-1.5, -49996, 35.2}, {-5, -1228, -321}});
+      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{-74.5, -2400, -7775}, {-1.5, -49996, 35.2}, {-5, -1228, -321.3}});
     }
   }
 
@@ -84,7 +84,7 @@ public static class Data
       yield return new TestCaseData(_matrices1[0], 1d).Returns(new double[,] {{1, 1, 1}, {1, 1, 1},  {1, 1, 1}});
       yield return new TestCaseData(_matrices1[1], 5d).Returns(new double[,] {{5, 10, 10}, {10, 5, 10}, {10, 10, 5}});
       yield return new TestCaseData(_matrices1[2], 2.5d).Returns(new double[,] {{3.75, 3.75, 3.75}, {6.25, 6.25, 6.25}, {8.75, 8.75, 8.75}});
-      yield return new TestCaseData(_matrices1[3], 0.3d).Returns(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+      yield return new TestCaseData(_matrices1[3], 0.3d).Returns(new double[,] {{7.65, 30, 7.5}, {3.3, 1.2, 13.5}, {10.2, 0.6, 36.9}});
     }
   }
 
@@ -94,8 +94,8 @@ public static class Data
     {
       yield return new TestCaseData(_matrices1[0], _matrices2[0]).Returns(new double[,] {{3, 3, 3}, {3, 3, 3},  {3, 3, 3}});
       yield return new TestCaseData(_matrices1[1], _matrices2[1]).Returns(new double[,] {{21, 21, 21}, {20, 20, 20}, {19, 19, 19}});
-      yield return new TestCaseData(_matrices1[2], _matrices2[2]).Returns(new double[,] {{6.53, 19.8, 10.2}, {10.9, 33, 17}, {15.2, 46.2, 23.8}});
-      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{4775, 5094500, 2.11e5}, {2905, 282850, 1.06e5}, {8222, 336290, 3.20e5}});
+      yield return new TestCaseData(_matrices1[2], _matrices2[2]).Returns(new double[,] {{6.52, 19.8, 10.2}, {10.88, 33, 17}, {15.23, 46.2, 23.8}});
+      yield return new TestCaseData(_matrices1[3], _matrices2[3]).Returns(new double[,] {{4775, 5094500, 210987.5}, {2905, 282850, 105832.7}, {8222, 336290, 319868.5}});
 
     }
   }

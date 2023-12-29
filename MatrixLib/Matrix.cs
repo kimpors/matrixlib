@@ -44,6 +44,19 @@ public class Matrix
     public bool IsEqualSize(Matrix a) 
       => Rows == a.Rows && Columns == a.Columns;
 
+    public Matrix Round(uint precise = 2)
+    {
+      for (int y = 0; y < Rows; y++)
+      {
+        for (int x = 0; x < Columns; x++)
+        {
+          _array[y, x] = Math.Round(_array[y, x], (int)precise);
+        }
+      }
+
+      return this;
+    }
+
     public static double GetDeterminant(Matrix a)
     {
         if (IsSquare(a) == false)
@@ -159,7 +172,7 @@ public class Matrix
         {
             for (int x = 0; x < Columns; x++)
             {
-                Result[y, x] = this[y, x] + a[y, x];
+                Result[y, x] = _array[y, x] + a[y, x];
             }
         }
 
@@ -174,7 +187,7 @@ public class Matrix
         {
             for (int x = 0; x < Columns; x++)
             {
-                Result[y, x] = Math.Round(this[y, x] * a, 3);
+                Result[y, x] = _array[y, x] * a;
             }
         }
 
@@ -196,10 +209,8 @@ public class Matrix
             {
                 for (int n = 0; n < Columns; n++)
                 {
-                    Result[y, x] += this[y, n] * a[n, x];
+                    Result[y, x] += _array[y, n] * a[n, x];
                 }
-
-                Result[y, x] = Math.Round(Result[y, x], 3);
             }
         }
 
