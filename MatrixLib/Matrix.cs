@@ -44,17 +44,49 @@ public class Matrix
     public bool IsEqualSize(Matrix a) 
       => Rows == a.Rows && Columns == a.Columns;
 
-    public Matrix Round(uint precise = 2)
+    public static Matrix Round(Matrix a, uint precise = 2)
     {
-      for (int y = 0; y < Rows; y++)
+      Matrix Result = new(a.Rows, a.Columns);
+
+      for (int y = 0; y < a.Rows; y++)
       {
-        for (int x = 0; x < Columns; x++)
+        for (int x = 0; x < a.Columns; x++)
         {
-          _array[y, x] = Math.Round(_array[y, x], (int)precise);
+          Result[y, x] = Math.Round(a[y, x], (int)precise);
         }
       }
 
-      return this;
+      return Result;
+    }
+
+    public static Matrix Floor(Matrix a)
+    {
+      Matrix Result = new(a.Rows, a.Columns);
+
+      for (int y = 0; y < a.Rows; y++)
+      {
+        for (int x = 0; x < a.Columns; x++)
+        {
+          Result[y, x] = Math.Floor(a[y, x]);
+        }
+      }
+
+      return Result;
+    }
+
+    public static Matrix Ceil(Matrix a)
+    {
+      Matrix Result = new(a.Rows, a.Columns);
+
+      for (int y = 0; y < a.Rows; y++)
+      {
+        for (int x = 0; x < a.Columns; x++)
+        {
+          Result[y, x] = Math.Ceiling(a[y, x]);
+        }
+      }
+
+      return Result;
     }
 
     public static double GetDeterminant(Matrix a)
