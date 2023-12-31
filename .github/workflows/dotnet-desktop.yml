@@ -42,7 +42,7 @@ jobs:
       uses: battila7/get-version-action@v2
       
     - name: 'Pack Project'
-      run: dotnet pack ${{ env.PACKAGE_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion-${{ steps.version.outputs.versoin-without-v }}
+      run: dotnet pack matrixlib.sln --no-restore --no-build --configuration Release -p:PackageVersion-${{ steps.version.outputs.versoin-without-v }}
       
     - name: 'Push Package'
       run: dotnet nuget push "bin/Release/MatrixLib.1.0.0.nupkg" --api-key NUGET_KEY --source "github"
