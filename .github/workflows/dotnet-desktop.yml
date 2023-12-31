@@ -1,15 +1,21 @@
-name: .NET Core Desktop Test
+name: Deploy to Nuget
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*'
+
+env:
+  PROJECT_PATH: 'MatrixLib/MatrixLib.csproj'
+  PACKAGE_PATH: ${{ github.workspace }}/Package
 
 jobs:
-  build-on-windows:
-    runs-on: windows-latest
+  deploy:
+    name: 'Deploy'
+    runs-on: 'ubuntu-latest'
 
     steps:
-    - name: Checkout
+    - name: 'Checkout'
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
@@ -18,23 +24,21 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-        
-    - name: Execute unit tests
-      run: dotnet test
 
-  build-on-ubuntu:
-    runs-on: ubuntu-latest
+    - name: 'Restore Project'
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: 'Build Project'
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      
+    - name: 'Test Project'
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-
-    - name: Execute unit tests
-      run: dotnet test
+    - name: 'Authenticate to Nuget'
+      run: dotnet nuget add source --username kimpors --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/kimpors/index.json"
+      
+    - name: 'Pack Project'
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release
+      
+    - name: 'Push Package'
+      run: dotnet nuget push "bin/Release/MatrixLib.1.0.0.nupkg" --api-key NUGET_KEY --source "github"
