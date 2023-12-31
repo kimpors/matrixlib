@@ -38,7 +38,7 @@ jobs:
     - run: echo "VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
     - name: 'Pack Project'
-      run: dotnet pack --configuration Release --no-restore --no-build
+      run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-restore --no-build
       
     - name: 'Push Package'
       run: dotnet nuget push "MatrixLib/bin/Release/*.nupkg" --api-key  ${{ secrets.NUGET_KEY }} --source "github"
