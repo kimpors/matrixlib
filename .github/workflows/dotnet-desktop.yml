@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_PATH: 'MatrixLib/MatrixLib.csproj'
-  PACKAGE_PATH: ${{ github.workspace }}/Package
+  PACKAGE_PATH: 'MatrixLib/bin/Release/'
 
 jobs:
   deploy:
@@ -42,7 +42,7 @@ jobs:
       uses: battila7/get-version-action@v2
       
     - name: 'Pack Project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion-${{ steps.version.outputs.versoin-without-v }}
+      run: dotnet pack ${{ env.PACKAGE_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion-${{ steps.version.outputs.versoin-without-v }}
       
     - name: 'Push Package'
       run: dotnet nuget push "bin/Release/MatrixLib.1.0.0.nupkg" --api-key NUGET_KEY --source "github"
