@@ -25,14 +25,8 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    - name: 'Restore Project'
-      run: dotnet restore
-
     - name: 'Test Project'
       run: dotnet test
-
-    - name: 'Build Project'
-      run: dotnet build --no-restore --configuration Release
 
     - name: 'Authenticate to Nuget'
       run: dotnet nuget add source --username kimpors --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/kimpors/index.json"
@@ -42,7 +36,7 @@ jobs:
     - run: echo "VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
     - name: 'Pack Project'
-      run: dotnet pack --configuration Release --no-restore --no-build --output ${{ env.PACKAGE_PATH }}
+      run: dotnet pack --configuration Release --output ${{ env.PACKAGE_PATH }}
       
     - name: 'Push Package'
       run: dotnet nuget push ${{ env.PACKAGE_PATH }}/*.nupkg --api-key  ${{ secrets.NUGET_KEY }} --source "github"
