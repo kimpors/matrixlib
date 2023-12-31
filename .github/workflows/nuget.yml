@@ -3,7 +3,7 @@ name: Deploy to Nuget
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
 
 env:
   PROJECT_PATH: 'MatrixLib/MatrixLib.csproj'
@@ -36,10 +36,9 @@ jobs:
     - name: 'Get Version'
       uses: actions/checkout@v2
     - run: echo "VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
-    - run: echo ${{ env.VERSION }}
 
     - name: 'Pack Project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion-${{ env.VERSION }}
+      run: dotnet pack --configuration Release --no-restore --no-build
       
     - name: 'Push Package'
       run: dotnet nuget push "MatrixLib/bin/Release/*.nupkg" --api-key  ${{ secrets.NUGET_KEY }} --source "github"
