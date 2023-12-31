@@ -39,7 +39,7 @@ jobs:
     - run: echo ${{ env.VERSION }}
 
     - name: 'Pack Project'
-      run: dotnet pack matrixlib.sln --no-restore --no-build --configuration Release -p:PackageVersion-${{ env.VERSION }}
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion-${{ env.VERSION }}
       
     - name: 'Push Package'
       run: dotnet nuget push "MatrixLib/bin/Release/*.nupkg" --api-key NUGET_KEY --source "github"
