@@ -35,7 +35,7 @@ jobs:
 
     - name: 'Get Version'
       uses: actions/checkout@v2
-    - run: VERSION=${GITHUB_REF#refs/*/v} >> $GITHUB_ENV
+    - run: echo "VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
     - run: echo ${{ env.VERSION }}
 
     - name: 'Pack Project'
