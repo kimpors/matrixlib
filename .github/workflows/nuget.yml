@@ -39,5 +39,8 @@ jobs:
     - name: 'Pack Project'
       run: dotnet pack --configuration Release --output ${{ env.PACKAGE_PATH }}
       
-    - name: 'Push Package'
+    - name: 'Push Package To Nuget'
       run: dotnet nuget push ${{ env.PACKAGE_PATH }}/*.nupkg --api-key  ${{ secrets.NUGET_KEY }} --source ${{ env.NUGET_SOURCE }}
+
+    - name: 'Push Package To Github'
+      run: dotnet nuget push ${{ env.PACKAGE_PATH }}/*.nupkg --api-key  ${{ secrets.KEY }} --source "github"
