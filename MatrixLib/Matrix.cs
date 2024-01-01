@@ -68,6 +68,24 @@ public class Matrix
     public static bool IsSquare(Matrix a) => a.Rows == a.Columns;
 
     ///  <summary>
+    ///    Execute function for every cells in matrix
+    ///  </summary>
+    ///  <param name="action">Function thats need to be executed</param>
+    ///  <returns>Self with modified data</returns>
+    public Matrix ForEach(Func<double, double> action)
+    {
+        for (int y = 0; y < Rows; y++)
+        {
+            for( int x = 0; x < Columns; x++)
+            {
+                _array[y, x] = action(_array[y, x]);
+            }
+        }
+
+        return this;
+    }
+
+    ///  <summary>
     ///   Checks if matrices have equal size.
     ///  </summary>
     ///  <param name="a">Object of 'Matrix' class</param>
@@ -300,7 +318,7 @@ public class Matrix
     ///  <returns>Return multiplication matrix by value</returns>
     public Matrix Mul(double a)
     {
-        Matrix Result = new(Rows, Columns);
+        Matrix Result = new(_array);
 
         for (int y = 0; y < Rows; y++)
         {
