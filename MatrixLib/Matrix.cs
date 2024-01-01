@@ -99,19 +99,7 @@ public class Matrix
     ///  <param name="precise">The accuracy of the numerical calculations performed</param>
     ///  <returns>Matrix with round data</returns>
     public static Matrix Round(Matrix a, uint precise = 2)
-    {
-      Matrix Result = new(a.Rows, a.Columns);
-
-      for (int y = 0; y < a.Rows; y++)
-      {
-        for (int x = 0; x < a.Columns; x++)
-        {
-          Result[y, x] = Math.Round(a[y, x], (int)precise);
-        }
-      }
-
-      return Result;
-    }
+        => new Matrix(Matrix.Raw(a)).ForEach(u => Math.Round(u, (int)precise));
 
     ///  <summary>
     ///   Rounds a number up to the next lower whole number.
@@ -119,19 +107,7 @@ public class Matrix
     ///  <param name="a">Object of 'Matrix' class</param>
     ///  <returns>Matrix with round to floor data</returns>
     public static Matrix Floor(Matrix a)
-    {
-      Matrix Result = new(a.Rows, a.Columns);
-
-      for (int y = 0; y < a.Rows; y++)
-      {
-        for (int x = 0; x < a.Columns; x++)
-        {
-          Result[y, x] = Math.Floor(a[y, x]);
-        }
-      }
-
-      return Result;
-    }
+        => new Matrix(Matrix.Raw(a)).ForEach(u => Math.Floor(u));
 
     ///  <summary>
     ///   Rounds a number up to the next higher whole number.
@@ -139,19 +115,7 @@ public class Matrix
     ///  <param name="a">Object of 'Matrix' class</param>
     ///  <returns>Matrix round to ceil data</returns>
     public static Matrix Ceil(Matrix a)
-    {
-      Matrix Result = new(a.Rows, a.Columns);
-
-      for (int y = 0; y < a.Rows; y++)
-      {
-        for (int x = 0; x < a.Columns; x++)
-        {
-          Result[y, x] = Math.Ceiling(a[y, x]);
-        }
-      }
-
-      return Result;
-    }
+        => new Matrix(Matrix.Raw(a)).ForEach(u => Math.Ceiling(u));
 
     ///  <summary>
     ///    Calculate determinant.
@@ -269,19 +233,8 @@ public class Matrix
     ///  <param name="max">Max value in range</param>
     ///  <returns>New matrix filled with random data.</returns>
     public Matrix Randomize(int min = 0, int max = 0)
-    {
-        Matrix Result = new(Rows, Columns);
+        => new Matrix(Rows, Columns).ForEach(u => new Random().NextInt64(min, max));
 
-        for (int y = 0; y < Rows; y++)
-        {
-            for (int x = 0; x < Columns; x++)
-            {
-                Result[y, x] = new Random().NextInt64(min, max);
-            }
-        }
-
-        return Result;
-    }
 
     ///  <summary>
     ///   Add two matrices.
@@ -298,13 +251,13 @@ public class Matrix
           throw new ArgumentException("Don't same size with matrix");
         }
 
-        Matrix Result = new(a.Rows, a.Columns);
+        Matrix Result = new(Matrix.Raw(a));
 
         for (int y = 0; y < Rows; y++)
         {
             for (int x = 0; x < Columns; x++)
             {
-                Result[y, x] = _array[y, x] + a[y, x];
+                Result[y, x] += _array[y, x];
             }
         }
 
@@ -316,20 +269,7 @@ public class Matrix
     ///  </summary>
     ///  <param name="a">Object of 'Matrix' class</param>
     ///  <returns>Return multiplication matrix by value</returns>
-    public Matrix Mul(double a)
-    {
-        Matrix Result = new(_array);
-
-        for (int y = 0; y < Rows; y++)
-        {
-            for (int x = 0; x < Columns; x++)
-            {
-                Result[y, x] = _array[y, x] * a;
-            }
-        }
-
-        return Result;
-    }
+    public Matrix Mul(double a) => new Matrix(_array).ForEach(u => u * a);
 
     ///  <summary>
     ///   Multiply 2 matrices.
