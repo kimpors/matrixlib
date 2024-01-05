@@ -4,23 +4,35 @@ namespace MatrixLib.Tests;
 
 public static class Data
 {
-  private static readonly List<Matrix> _matrices1;
-  private static readonly List<Matrix> _matrices2;
+  private static readonly Matrix[] _matrices1;
+  private static readonly Matrix[] _matrices2;
+  private static readonly Matrix[] _matrices3;
 
   static Data()
   {
-    _matrices1 = new(255);
-    _matrices2 = new(255);
+    _matrices1 = new Matrix[]
+    {
+        new Matrix(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}),
+        new Matrix(new double[,] {{1, 2, 2}, {2, 1, 2}, {2, 2, 1}}),
+        new Matrix(new double[,] {{1.5, 1.5, 1.5}, {2.5, 2.5, 2.5}, {3.5, 3.5, 3.5}}),
+        new Matrix (new double[,] {{25.5, 100, 25}, {11, 4, 45}, {34, 2, 123}})
+    };
 
-    _matrices1.Add(new(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}));
-    _matrices1.Add(new(new double[,] {{1, 2, 2}, {2, 1, 2}, {2, 2, 1}}));
-    _matrices1.Add(new(new double[,] {{1.5, 1.5, 1.5}, {2.5, 2.5, 2.5}, {3.5, 3.5, 3.5}}));
-    _matrices1.Add(new(new double[,] {{25.5, 100, 25}, {11, 4, 45}, {34, 2, 123}}));
+    _matrices2 = new Matrix[]
+    {
+        new Matrix(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}),
+        new Matrix(new double[,] {{3, 3, 3}, {4, 4, 4}, {5, 5, 5}}),
+        new Matrix(new double[,] {{0.25, 0.3, 0.4}, {0.9, 0.7, 1.1}, {3.2, 12.2, 5.3}}),
+        new Matrix(new double[,] {{100, 2500, 7800}, {12.5, 50000, 9.8}, {39, 1230, 444.3}})
+    };
 
-    _matrices2.Add(new(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}));
-    _matrices2.Add(new(new double[,] {{3, 3, 3}, {4, 4, 4}, {5, 5, 5}}));
-    _matrices2.Add(new(new double[,] {{0.25, 0.3, 0.4}, {0.9, 0.7, 1.1}, {3.2, 12.2, 5.3}}));
-    _matrices2.Add(new(new double[,] {{100, 2500, 7800}, {12.5, 50000, 9.8}, {39, 1230, 444.3}}));
+    _matrices3 = new Matrix[]
+    {
+        new Matrix(new double[,] {{1.5, 1.5, 1.5}, {2.4, 2.4, 2.4}, {3.6, 3.6, 3.6}}),
+        new Matrix(new double[,] {{0.5, 0.15, 0.25}, {0.35, 0.45, 0.65}, {0.75, 0.85, 0.95}}),
+        new Matrix(new double[,] {{0.005, 0.0150, 0.0250}, {0.0450, 0.0650, 1.805}, {0.752, 0.070, 0.340}}),
+        new Matrix(new double[,] {{250.505, 9009.1150, 32.025}, {80_000.750, 400.65, 0.85}, {130.52, 58.7, 909.14}}),
+    };
   }
 
   public static IEnumerable Squares
@@ -108,6 +120,39 @@ public static class Data
       yield return new TestCaseData(_matrices1[1]).Returns("[1, 2, 2]\n[2, 1, 2]\n[2, 2, 1]");
       yield return new TestCaseData(_matrices1[2]).Returns("[1.5, 1.5, 1.5]\n[2.5, 2.5, 2.5]\n[3.5, 3.5, 3.5]");
       yield return new TestCaseData(_matrices1[3]).Returns("[25.5, 100, 25]\n[11, 4, 45]\n[34, 2, 123]");
+    }
+  }
+
+  public static IEnumerable Rounds
+  {
+    get
+    {
+      yield return new TestCaseData(_matrices3[0]).Returns(new double[,] {{2, 2, 2}, {2, 2, 2}, {4, 4, 4}});
+      yield return new TestCaseData(_matrices3[1]).Returns(new double[,] {{0, 0, 0}, {0, 0, 1}, {1, 1, 1}});
+      yield return new TestCaseData(_matrices3[2]).Returns(new double[,] {{0, 0, 0}, {0, 0, 2}, {1, 0, 0}});
+      yield return new TestCaseData(_matrices3[3]).Returns(new double[,] {{251, 9009, 32}, {80_001, 401, 1}, {131, 59, 909}});
+    }
+  }
+
+  public static IEnumerable Floors
+  {
+    get
+    {
+      yield return new TestCaseData(_matrices3[0]).Returns(new double[,] {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}});
+      yield return new TestCaseData(_matrices3[1]).Returns(new double[,] {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
+      yield return new TestCaseData(_matrices3[2]).Returns(new double[,] {{0, 0, 0}, {0, 0, 1}, {0, 0, 0}});
+      yield return new TestCaseData(_matrices3[3]).Returns(new double[,] {{250, 9009, 32}, {80_000, 400, 0}, {130, 58, 909}});
+    }
+  }
+
+  public static IEnumerable Ceils
+  {
+    get
+    {
+      yield return new TestCaseData(_matrices3[0]).Returns(new double[,] {{2, 2, 2}, {3, 3, 3}, {4, 4, 4}});
+      yield return new TestCaseData(_matrices3[1]).Returns(new double[,] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+      yield return new TestCaseData(_matrices3[2]).Returns(new double[,] {{1, 1, 1}, {1, 1, 2}, {1, 1, 1}});
+      yield return new TestCaseData(_matrices3[3]).Returns(new double[,] {{251, 9010, 33}, {80_001, 401, 1}, {131, 59, 910}});
     }
   }
 }

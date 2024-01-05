@@ -32,4 +32,13 @@ public class Tests
 
   [TestCaseSource(typeof(Data), nameof(Data.Strings))]
   public string String(Matrix a) => a.ToString();
+
+  [TestCaseSource(typeof(Data), nameof(Data.Rounds))]
+  public double[,] Rounds(Matrix a) => Matrix.Raw(Matrix.Round(a, 0));
+
+  [TestCaseSource(typeof(Data), nameof(Data.Floors))]
+  public double[,] Floors(Matrix a) => Matrix.Raw(Matrix.Floor(a));
+
+  [TestCaseSource(typeof(Data), nameof(Data.Ceils))]
+  public double[,] Ceils(Matrix a) => Matrix.Raw(Matrix.Ceil(a));
 }
